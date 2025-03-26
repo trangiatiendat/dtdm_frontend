@@ -21,25 +21,23 @@ const Home = () => {
   }, []);
 
   // Tìm kiếm sản phẩm (debounce 500ms)
-  const searchProducts = useCallback(
-    debounce(async (query) => {
-      if (!query) {
-        fetchProducts();
-        return;
-      }
-      try {
-        const res = await axios.get(
-          `http://localhost:5000/api/products/search?search=${encodeURIComponent(
-            query
-          )}`
-        );
-        setProducts(res.data);
-      } catch (error) {
-        console.error("Lỗi khi tìm kiếm sản phẩm:", error);
-      }
-    }, 500),
-    [fetchProducts]
-  );
+ const searchProducts = useCallback(
+  debounce(async (query) => {
+    if (!query) {
+      await fetchProducts(); // Thêm await nếu fetchProducts là async
+      return;
+    }
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/products/search?search=${encodeURIComponent(query)}`
+      );
+      setProducts(res.data);
+    } catch (error) {
+      console.error("Lỗi khi tìm kiếm sản phẩm:", error);
+    }
+  }, 500),
+  [fetchProducts, setProducts] // Thêm setProducts nếu nó thay đổi trong component
+);
 
   // Lấy dữ liệu sản phẩm ngay khi vào trang
   useEffect(() => {
