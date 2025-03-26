@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Container, Grid, Typography, TextField } from "@mui/material";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
@@ -21,24 +21,25 @@ const Home = () => {
   }, []);
 
   // Tìm kiếm sản phẩm (debounce 500ms)
-  const searchProducts = useCallback(
-    debounce(async (query) => {
-      if (!query) {
-        fetchProducts();
-        return;
-      }
-      try {
-        const res = await axios.get(
-          `http://localhost:5000/api/products/search?search=${encodeURIComponent(
-            query
-          )}`
-        );
-        setProducts(res.data);
-      } catch (error) {
-        console.error("Lỗi khi tìm kiếm sản phẩm:", error);
-      }
-    }, 500),
-    [fetchProducts]
+  const searchProducts = useMemo(
+    () =>
+      debounce(async (query) => {
+        if (!query) {
+          fetchProducts();
+          return;
+        }
+        try {
+          const res = await axios.get(
+            `http://localhost:5000/api/products/search?search=${encodeURIComponent(
+              query
+            )}`
+          );
+          setProducts(res.data);
+        } catch (error) {
+          console.error("Lỗi khi tìm kiếm sản phẩm:", error);
+        }
+      }, 500),
+    [fetchProducts] // Đảm bảo fetchProducts được giữ ổn định
   );
 
   // Lấy dữ liệu sản phẩm ngay khi vào trang
