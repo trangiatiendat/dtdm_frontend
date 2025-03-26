@@ -1,4 +1,4 @@
 node_modules
 npm-debug.log
 .env
-RUN npm install && npm run build
+RUN npm install && CI=false npm run build
