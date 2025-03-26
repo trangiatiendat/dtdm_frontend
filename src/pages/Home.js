@@ -9,11 +9,12 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [editingProduct, setEditingProduct] = useState(null); // State lưu sản phẩm đang chỉnh sửa
+  const BASE_URL = "https://dtdmbackend-production.up.railway.app/api/products";
 
   // Hàm lấy danh sách sản phẩm từ API
   const fetchProducts = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/products");
+      const res = await axios.get(`${BASE_URL}`);
       setProducts(res.data);
     } catch (error) {
       console.error("Lỗi khi tải sản phẩm:", error);
@@ -29,11 +30,7 @@ const Home = () => {
           return;
         }
         try {
-          const res = await axios.get(
-            `http://localhost:5000/api/products/search?search=${encodeURIComponent(
-              query
-            )}`
-          );
+          const res = await axios.get(`${BASE_URL}/search?search=${encodeURIComponent(query)}`);
           setProducts(res.data);
         } catch (error) {
           console.error("Lỗi khi tìm kiếm sản phẩm:", error);
@@ -51,7 +48,7 @@ const Home = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/products/${id}`);
+      await axios.delete(`${BASE_URL}/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Lỗi khi xóa sản phẩm:", error);
@@ -71,9 +68,7 @@ const Home = () => {
   // Cập nhật sản phẩm
   const handleUpdateProduct = async (updatedProduct) => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/products/${updatedProduct._id}`,
-        updatedProduct
+      await axios.put(`${BASE_URL}/${updatedProduct._id}`, updatedProduct);
       );
       fetchProducts();
       setEditingProduct(null); // Đóng form sau khi cập nhật thành công
