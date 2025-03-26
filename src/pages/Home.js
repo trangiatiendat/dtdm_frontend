@@ -20,6 +20,7 @@ const Home = () => {
     }
   }, []);
 
+  // Tìm kiếm sản phẩm (debounce 500ms)
   const searchProducts = useCallback(
     debounce(async (query) => {
       if (!query) {
@@ -28,9 +29,9 @@ const Home = () => {
       }
       try {
         const res = await axios.get(
-          http://localhost:5000/api/products/search?search=${encodeURIComponent(
+          `http://localhost:5000/api/products/search?search=${encodeURIComponent(
             query
-          )}
+          )}`
         );
         setProducts(res.data);
       } catch (error) {
