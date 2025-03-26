@@ -41,7 +41,7 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/products", product);
+      await axios.post("https://dtdmbackend-production.up.railway.app/api/products", product);
       alert("Thêm sản phẩm thành công!");
       setProduct({
         name: "",
