@@ -68,7 +68,6 @@ const Home = () => {
   const handleUpdateProduct = async (updatedProduct) => {
     try {
       await axios.put(`${BASE_URL}/${updatedProduct._id}`, updatedProduct);
-      );
       fetchProducts();
       setEditingProduct(null); // Đóng form sau khi cập nhật thành công
     } catch (error) {
