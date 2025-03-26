@@ -22,22 +22,21 @@ const Home = () => {
   }, []);
 
   // Tìm kiếm sản phẩm (debounce 500ms)
-  const searchProducts = useMemo(
-    () =>
-      debounce(async (query) => {
-        if (!query) {
-          fetchProducts();
-          return;
-        }
-        try {
-          const res = await axios.get(`${BASE_URL}/search?search=${encodeURIComponent(query)}`);
-          setProducts(res.data);
-        } catch (error) {
-          console.error("Lỗi khi tìm kiếm sản phẩm:", error);
-        }
-      }, 500),
-    [fetchProducts] // Đảm bảo fetchProducts được giữ ổn định
-  );
+  const searchProducts = useMemo(() => {
+    return debounce(async (query) => {
+      if (!query) {
+        fetchProducts();
+        return;
+      }
+      try {
+        const res = await axios.get(`${BASE_URL}/search?search=${encodeURIComponent(query)}`);
+        setProducts(res.data);
+      } catch (error) {
+        console.error("Lỗi khi tìm kiếm sản phẩm:", error);
+      }
+    }, 500);
+  }, [fetchProducts]);
+
 
   // Lấy dữ liệu sản phẩm ngay khi vào trang
   useEffect(() => {
